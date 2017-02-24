@@ -7,8 +7,6 @@ Author:
 Version: 1.0
 Author URI: 
 License: GPLv2
-
-
 */
 
 require_once(ABSPATH.'wp-config.php');
@@ -35,15 +33,22 @@ function getUserIP(){
   }else{
       $ip = $remote;
 
-  }
-   
+  } 
+
+
+  $postID = get_the_ID();
+  $pageName = get_the_title($postID);
+  $pageUrl = get_post_permalink($postID);
   
   global $wpdb;
-
   $date = date('Y-m-d H:i:s');
+
   $wpdb->insert('ips',array(
       'date' => $date,
       'address' => $ip,
+      'post_ID' => $postID,
+      'page_name' => $pageName,
+      'page_url' => $pageUrl,
       )); 
 }
 
@@ -55,7 +60,7 @@ function iplogger_admin(){
   global $wpdb;
   $displayData = $wpdb->get_results(
     "
-    SELECT ID, Date, Address
+    SELECT ID, date, address, post_ID, page_name, page_url
     FROM `ips`
     "
     );
@@ -63,13 +68,15 @@ function iplogger_admin(){
 ?>
   <div class="wrap">
     <h4>IP logger</h4>
-
     <table class="widefat">
       <thead>
         <tr>
           <th>#</th>
           <th>IP adress</th>
           <th>Date</th>
+          <th>Post ID</th>
+          <th>Post Name</th>
+          <th>Post Link</th>
         </tr>
       </thead>
         <tfoot>
@@ -77,28 +84,31 @@ function iplogger_admin(){
           <th>#</th>
           <th>IP adress</th>
           <th>Date</th>
+          <th>Post ID</th>
+          <th>Post Name</th>
+          <th>Post Link</th>
         </tr>
         </tfoot>
         <tbody>
-<?php
+        <?php
           foreach ($displayData as $displayData) {
-?>
+        ?>
           <tr>
-<?php
-            echo "<td>".$displayData->ID."</td>";
-            echo"<td>".$displayData->Address."</td>";
-            echo "<td>".$displayData->Date."</td>";
-?>
+        <?php
+          echo "<td>".$displayData->ID."</td>";
+          echo"<td>".$displayData->address."</td>";
+          echo"<td>".$displayData->date."</td>";
+          echo "<td>".$displayData->post_ID."</td>";
+          echo "<td>".$displayData->page_name."</td>";
+          echo "<td> <a href='".$displayData->page_url."'>Link</a></td>";
+        ?>
           <tr>
-<?php
+        <?php
           }
-          
-?>
+        ?>
         </tbody>
       </table>
   </div>
-
 <?php
-
-}
+  }
 ?>
