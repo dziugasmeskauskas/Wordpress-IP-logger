@@ -9,14 +9,58 @@ Author URI:
 License: GPLv2
 */
 
+
 require_once(ABSPATH.'wp-config.php');
 add_action('admin_menu', 'admin_actions');
+
+function create_stats(){
+  global $wpdb;
+ 
+
+  $logged = $wpdb->prefix . "logged_ips";
+  $optional = $wpdb->prefix . "optional_ips";
+
+  if($wpdb->get_var("show tables like '$logged'") !== $logged) {
+
+    $sql =  "CREATE TABLE ". $logged . " (
+            ID int(11) NOT NULL AUTO_INCREMENT,
+            date text,
+            address text NOT NULL, 
+            post_ID int(11) NOT NULL,
+            page_name text NOT NULL,
+            page_url text NOT NULL,
+            UNIQUE KEY ID (ID));";
+  }
+
+    if($wpdb->get_var("show tables like '$optional'") !== $optional) {
+
+    $sql =  "CREATE TABLE ". $optional . " (
+            ID int(11) NOT NULL AUTO_INCREMENT,
+            address text NOT NULL, 
+            UNIQUE KEY ID (ID));";
+  }
+ 
+  require_once(ABSPATH . 'wp-admin/upgrade-functions.php');
+  dbDelta($sql);
+ 
+  if (!isset($wpdb->logged_ips)) {
+
+    $wpdb->logged_ips = $logged; 
+    $wpdb->optional_ips = $optional; 
+    $wpdb->tables[] = str_replace($wpdb->prefix, '', $logged); 
+    $wpdb->tables[] = str_replace($wpdb->prefix, '', $optional); 
+  }
+}
+ 
+//add to front and backend inits
+add_action('init', 'create_stats');
+
 
 function admin_actions(){
 
   add_options_page('IP logger', 'IP logger', 'manage_options', __FILE__, 'iplogger_admin');
-}
 
+}
 
 function getUserIP(){
 
@@ -67,7 +111,7 @@ function iplogger_admin(){
 
 ?>
   <div class="wrap">
-    <h4>IP logger</h4>
+    <h4>IP logger</h4> <input type="text" required pattern="((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}$">
     <table class="widefat">
       <thead>
         <tr>
