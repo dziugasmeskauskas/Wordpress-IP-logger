@@ -16,25 +16,30 @@ function drawOptional(){
     <thead>
       <tr>
         <th>#</th>
-        <th>IP adress</t>
+        <th>IP adress</th>
+        <th>Delete</th>
       </tr>
     </thead>
       <tfoot>
       <tr>
         <th>#</th>
         <th>IP adress</th>
+        <th>Delete</th>
       </tr>
       </tfoot>
       <tbody>
       <?php
+      $numeric = 0;
         foreach ($optionalData as $optionalData) {
+          $numeric++;
       ?>
-        <tr>
+        <tr <?php echo "data-id=".$optionalData->ID.""?> >
       <?php
-        echo "<td>".$optionalData->ID."</td>";
+        echo"<td>".$numeric."</td>";
         echo"<td>".$optionalData->address."</td>";
+        echo"<td><button class='button-secondary deleteRow' type='button'>Delete</button></td>";
       ?>
-        <tr>
+        </tr>
       <?php
         }
       ?>

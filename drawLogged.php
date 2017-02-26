@@ -40,11 +40,13 @@ function drawLogged(){
         </tfoot>
         <tbody>
         <?php
+        $numeric = 0;
           foreach ($loggedData as $loggedData) {
+            $numeric++;
         ?>
           <tr>
         <?php
-          echo "<td>".$loggedData->ID."</td>";
+          echo"<td>".$numeric."</td>";
           echo"<td>".$loggedData->address."</td>";
           echo"<td>".$loggedData->date."</td>";
           echo "<td>".$loggedData->post_ID."</td>";

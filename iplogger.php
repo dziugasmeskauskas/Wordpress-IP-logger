@@ -31,26 +31,49 @@ function ajaxCall() { ?>
   <script type="text/javascript" >
 
   jQuery(document).ready(function($) {
-    $("#addAddress").on("submit", function(e) {
-    var IP = jQuery("#dname").val()
-    e.preventDefault();
+
+
+
+   $('.deleteRow').on('click',function(e) {
+
+    var tr = $(event.currentTarget).parent().parent().data('id');
+
+    // fix the "Feature" by returning multiple values in ajax request
     var data = {
-              'action': 'insertIP',
-              'ROUTE': IP
-               };
+                'action': 'deleteRow',
+                'ID': tr
+                 };
 
     jQuery.post(ajaxurl, data, function(response) {
-      drawOptional();
-
+      $('#optional tr[data-id="'+tr+'"]').remove();
+          });
     });
 
+    var rowCount = $('#optional tbody tr').length;
+
+    $("#addAddress").on("submit", function(e) {
+      var IP = jQuery("#dname").val()
+      e.preventDefault();
+      var data = {
+                'action': 'insertIP',
+                'ROUTE': IP
+                 };
+
+    jQuery.post(ajaxurl, data, function(response) {
+        $('#optional').append("<tr>" + "<td>" + (++rowCount) + "</td>" + "<td>" + response + "</td>" +  "<td><button class='button-secondary deleteRow' type='button'>Delete</button></td>" + "</tr>");
+          });
+    });
+
+$(".checkIPs").on("change", "input:radio", function(e){
+  
+    $('input[name="genderS"]:checked').val();
+  
 
     });
 
 });
   </script> <?php
 }
-
 
 
 function iplogger_admin(){
@@ -62,7 +85,4 @@ function iplogger_admin(){
    drawLogged();
 
   }
-
-
-
 ?>
