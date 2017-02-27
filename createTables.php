@@ -36,4 +36,30 @@ function create_tables(){
     $wpdb->tables[] = str_replace($wpdb->prefix, '', $optional); 
   }
 }
+
+function createOption () {
+
+  global $wpdb; 
+  $options = $wpdb->prefix . "options";
+
+  $option_name = 'Which_ip_to_logg';
+
+  $count = $wpdb->get_var($wpdb->prepare(
+    "SELECT COUNT(*) FROM $options WHERE option_value = %s",
+    'Which_ip_to_logg') 
+     );
+
+
+
+  if($count <= 0){
+
+      $wpdb->insert( $options,
+      array( 
+        'option_name' => 'Which_ip_to_logg', 
+        'option_value' => 'all',
+        'autoload'=>'yes',
+      ));
+    } 
+}
 ?>
+

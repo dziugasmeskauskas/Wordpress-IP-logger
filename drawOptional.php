@@ -45,8 +45,6 @@ function drawOptional(){
       ?>
       </tbody>
     </table>
-
-   
   <?php
 }
 ?>

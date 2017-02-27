@@ -20,6 +20,7 @@ require ABSPATH.'/wp-content/plugins/Wordpress-IP-logger/drawLogged.php';
 
 add_action('admin_menu', 'admin_actions');
 add_action('init', 'create_tables');
+add_action('init', 'createOption');
 add_action('wp_head', 'getUserIP');
 add_action( 'admin_footer', 'ajaxCall' ); 
 
@@ -32,57 +33,63 @@ function ajaxCall() { ?>
 
   jQuery(document).ready(function($) {
 
+    $('.deleteRow').on('click',function(e) {
 
+      var tr = $(event.currentTarget).parent().parent().data('id');
+      // fix the "Feature" by returning multiple values in ajax request
+      var data = {
+                  'action': 'deleteRow',
+                  'ID': tr
+                   };
 
-   $('.deleteRow').on('click',function(e) {
+      jQuery.post(ajaxurl, data, function(response) {
+        $('#optional tr[data-id="'+tr+'"]').remove();
+            });
+      });
 
-    var tr = $(event.currentTarget).parent().parent().data('id');
-
-    // fix the "Feature" by returning multiple values in ajax request
-    var data = {
-                'action': 'deleteRow',
-                'ID': tr
-                 };
-
-    jQuery.post(ajaxurl, data, function(response) {
-      $('#optional tr[data-id="'+tr+'"]').remove();
-          });
-    });
-
-    var rowCount = $('#optional tbody tr').length;
+      var rowCount = $('#optional tbody tr').length;
 
     $("#addAddress").on("submit", function(e) {
       var IP = jQuery("#dname").val()
       e.preventDefault();
       var data = {
-                'action': 'insertIP',
-                'ROUTE': IP
-                 };
+                  'action': 'insertIP',
+                  'ROUTE': IP
+                   };
 
-    jQuery.post(ajaxurl, data, function(response) {
-        $('#optional').append("<tr>" + "<td>" + (++rowCount) + "</td>" + "<td>" + response + "</td>" +  "<td><button class='button-secondary deleteRow' type='button'>Delete</button></td>" + "</tr>");
-          });
-    });
+      jQuery.post(ajaxurl, data, function(response) {
+          $('#optional').append("<tr>" + "<td>" + (++rowCount) + "</td>" + "<td>" + response + "</td>" +  "<td><button class='button-secondary deleteRow' type='button'>Delete</button></td>" + "</tr>");
+            });
+      });
 
-$(".checkIPs").on("change", "input:radio", function(e){
+    $(".checkIPs").on("change", "input:radio", function(e){
   
-    $('input[name="genderS"]:checked').val();
-  
+      var which = $('input[name="logIP"]:checked').val();
 
-    });
+      var data = {
+                  'action': 'whichIpToLog',
+                  'logIP': which
+                   };
+
+      jQuery.post(ajaxurl, data, function(response) {
+        $("#logThis").text("Currently logging" + response+ " IP's");
+            });
+      });
+  
 
 });
   </script> <?php
 }
 
-
 function iplogger_admin(){
-  ?>
-   <div class="wrap">
-   <?php
+
+   echo '<div class="wrap">';
+
    drawForm();
    drawOptional();
    drawLogged();
+
+   echo '</div>';
 
   }
 ?>

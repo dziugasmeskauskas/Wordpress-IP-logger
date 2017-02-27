@@ -16,21 +16,45 @@ function getUserIP(){
 
   } 
 
+  global $wpdb;
+  $options = $wpdb->prefix . "options";
+  $logged = $wpdb->prefix . "logged_ips";
+  $optional = $wpdb->prefix . "optional_ips";
+
+  $thevalue = get_option('Which_ip_to_logg');
+
   $postID = get_the_ID();
   $pageName = get_the_title($postID);
   $pageUrl = get_post_permalink($postID);
-  
-  global $wpdb;
   $date = date('Y-m-d H:i:s');
 
-  $logged = $wpdb->prefix . "logged_ips";
+  if($thevalue == 'selected'){
 
-  $wpdb->insert($logged,array(
+    $optionalData = $wpdb->get_results(
+    "
+    SELECT address
+    FROM $optional
+    "
+    );
+    foreach ($optionalData as $optionalData) {
+      if($optionalData->address == $ip){
+        $wpdb->insert($logged,array(
+          'date' => $date,
+          'address' => $ip,
+          'post_ID' => $postID,
+          'page_name' => $pageName,
+          'page_url' => $pageUrl,
+          ));
+      }
+    }
+  } else {
+    $wpdb->insert($logged,array(
       'date' => $date,
       'address' => $ip,
       'post_ID' => $postID,
       'page_name' => $pageName,
       'page_url' => $pageUrl,
-      )); 
+      ));
+  }
 }
 ?>
