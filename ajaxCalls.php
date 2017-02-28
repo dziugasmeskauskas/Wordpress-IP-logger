@@ -13,7 +13,15 @@ function insertIP(){
      'address' => $addIP,
       )); 
 
-  echo $addIP;
+  $lastID = $wpdb->get_var($wpdb->prepare(
+    "SELECT ID FROM $optional WHERE address = %s",
+    $addIP) 
+     );
+
+  $data=array("IP"=>$addIP, "ID"=>$lastID);
+
+  echo json_encode($data);
+  
   wp_die();
 }
 

@@ -13,7 +13,7 @@ License: GPLv2
 require_once ABSPATH.'wp-config.php';
 require ABSPATH.'/wp-content/plugins/Wordpress-IP-logger/createTables.php';
 require ABSPATH.'/wp-content/plugins/Wordpress-IP-logger/getUserIP.php';
-require ABSPATH.'/wp-content/plugins/Wordpress-IP-logger/insertOptionalIPs.php';
+require ABSPATH.'/wp-content/plugins/Wordpress-IP-logger/ajaxCalls.php';
 require ABSPATH.'/wp-content/plugins/Wordpress-IP-logger/drawForm.php';
 require ABSPATH.'/wp-content/plugins/Wordpress-IP-logger/drawOptional.php';
 require ABSPATH.'/wp-content/plugins/Wordpress-IP-logger/drawLogged.php';
@@ -33,10 +33,11 @@ function ajaxCall() { ?>
 
   jQuery(document).ready(function($) {
 
-    $('.deleteRow').on('click',function(e) {
+    $('#tbodyOptional').on('click','.deleteRow',function(e) {
+      console.log('registering');
 
-      var tr = $(event.currentTarget).parent().parent().data('id');
-      // fix the "Feature" by returning multiple values in ajax request
+      var tr = $(event.currentTarget).children().data('id');
+      console.log(tr);
       var data = {
                   'action': 'deleteRow',
                   'ID': tr
@@ -44,6 +45,7 @@ function ajaxCall() { ?>
 
       jQuery.post(ajaxurl, data, function(response) {
         $('#optional tr[data-id="'+tr+'"]').remove();
+        console.log(tr);
             });
       });
 
@@ -58,7 +60,8 @@ function ajaxCall() { ?>
                    };
 
       jQuery.post(ajaxurl, data, function(response) {
-          $('#optional').append("<tr>" + "<td>" + (++rowCount) + "</td>" + "<td>" + response + "</td>" +  "<td><button class='button-secondary deleteRow' type='button'>Delete</button></td>" + "</tr>");
+          var obj=$.parseJSON(response);
+          $('#optional').append("<tr data-id="+obj.ID+">" + "<td>" + (++rowCount) + "</td>" + "<td>" + obj.IP + "</td>" +  "<td><button class='button-secondary deleteRow' type='button'>Delete</button></td>" + "</tr>");
             });
       });
 

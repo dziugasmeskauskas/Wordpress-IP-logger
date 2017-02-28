@@ -27,7 +27,7 @@ function drawOptional(){
         <th>Delete</th>
       </tr>
       </tfoot>
-      <tbody>
+      <tbody id="tbodyOptional">
       <?php
       $numeric = 0;
         foreach ($optionalData as $optionalData) {
