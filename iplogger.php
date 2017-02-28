@@ -30,14 +30,10 @@ function admin_actions(){
 
 function ajaxCall() { ?>
   <script type="text/javascript" >
-
   jQuery(document).ready(function($) {
 
     $('#tbodyOptional').on('click','.deleteRow',function(e) {
-      console.log('registering');
-
       var tr = $(event.currentTarget).children().data('id');
-      console.log(tr);
       var data = {
                   'action': 'deleteRow',
                   'ID': tr
@@ -45,13 +41,11 @@ function ajaxCall() { ?>
 
       jQuery.post(ajaxurl, data, function(response) {
         $('#optional tr[data-id="'+tr+'"]').remove();
-        console.log(tr);
             });
       });
 
-      var rowCount = $('#optional tbody tr').length;
-
     $("#addAddress").on("submit", function(e) {
+      var rowCount = $('#optional tbody tr').length;
       var IP = jQuery("#dname").val()
       e.preventDefault();
       var data = {
@@ -66,9 +60,7 @@ function ajaxCall() { ?>
       });
 
     $(".checkIPs").on("change", "input:radio", function(e){
-  
       var which = $('input[name="logIP"]:checked').val();
-
       var data = {
                   'action': 'whichIpToLog',
                   'logIP': which
@@ -78,8 +70,6 @@ function ajaxCall() { ?>
         $("#logThis").text("Currently logging" + response+ " IP's");
             });
       });
-  
-
 });
   </script> <?php
 }
