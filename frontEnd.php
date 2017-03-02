@@ -64,23 +64,49 @@ function drawOptional(){
   <?php
 }
 
+
 function drawLogged(){
 
   global $wpdb;
   $logged = $wpdb->prefix . "logged_ips";
 
 
+  // $loggedData = $wpdb->get_results(
+  //   "
+  //   SELECT ID, date, address, post_ID, page_name, page_url
+  //   FROM $logged
+  //   "
+  //   );
+
+  // $pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
+  $pagenum = filter_input(INPUT_GET, 'pagenum') ? absint(filter_input(INPUT_GET, 'pagenum')) : 1;
+
+  $limit = 50; 
+  $offset = ( $pagenum - 1 ) * $limit;
+  $total = $wpdb->get_var( "SELECT COUNT(`id`) FROM $logged" );
+  $num_of_pages = ceil( $total / $limit );
+
+
   $loggedData = $wpdb->get_results(
     "
-    SELECT ID, date, address, post_ID, page_name, page_url
-    FROM $logged
-    "
+    SELECT ID, date, address, post_ID, page_name, page_url 
+    FROM $logged 
+    LIMIT $offset, $limit" 
     );
 
+  $page_links = paginate_links( array(
+    'base' => add_query_arg( 'pagenum', '%#%' ),
+    'format' => '',
+    'prev_text' => __( '&laquo;', 'text-domain' ),
+    'next_text' => __( '&raquo;', 'text-domain' ),
+    'total' => $num_of_pages,
+    'current' => $pagenum
+) );
+
+if ( $page_links ) {
+    echo '<div class="tablenav"><div class="tablenav-pages" style="margin: 1em 0">' . $page_links . '</div></div>';
+}
   ?>
-   <div class="wrap">
-
-
     <h3>Logged IPs</h3>
     <table class="widefat">
       <thead>
@@ -124,8 +150,9 @@ function drawLogged(){
         ?>
         </tbody>
       </table>
-  </div>
   <?php
+  if ( $page_links ) {
+    echo '<div class="tablenav"><div class="tablenav-pages" style="margin: 1em 0">' . $page_links . '</div></div>';
+  }
 }
-
 ?>

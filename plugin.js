@@ -2,7 +2,6 @@ jQuery(document).ready(function($) {
 
   $('#tbodyOptional').on('click','.deleteRow',function(e) {
     var tr = $(event.currentTarget).children().data('id');
-
     var data = {
               'action': 'deleteRow',
               'ID': tr
@@ -39,4 +38,5 @@ jQuery(document).ready(function($) {
       $("#logThis").text("Currently logging" + response+ " IP's");
     });
   });
+
 });

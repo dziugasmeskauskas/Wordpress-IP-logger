@@ -2,6 +2,7 @@
 function create_tables(){
 
   global $wpdb;
+  require_once(ABSPATH . 'wp-admin/upgrade-functions.php');
 
   $logged = $wpdb->prefix . "logged_ips";
   $optional = $wpdb->prefix . "optional_ips";
@@ -25,7 +26,8 @@ function create_tables(){
 
   dbDelta($sql);
 
-  require_once(ABSPATH . 'wp-admin/upgrade-functions.php');
+ 
+
  
   if (!isset($wpdb->logged_ips)) {
 
