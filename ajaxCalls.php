@@ -59,12 +59,7 @@ function whichIpToLog(){
 }
 
 add_action('wp_ajax_deleteRow', 'deleteRow');
-add_action( 'wp_ajax_nopriv_deleteRow', 'deleteRow');
-
 add_action('wp_ajax_insertIP', 'insertIP'); 
-add_action('wp_ajax_nopriv_insertIP', 'insertIP'); 
-
 add_action('wp_ajax_whichIpToLog', 'whichIpToLog'); 
-add_action('wp_ajax_nopriv_whichIpToLog', 'whichIpToLog'); 
 
 ?>
