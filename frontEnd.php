@@ -7,6 +7,16 @@ function drawForm(){
     <input type="radio" name="logIP" value="all" id="all" > Log all IP's<br>
     <input type="radio" name="logIP" value="selected" id="selected"> Log selected IP's<br>
   </form>
+
+  <script type="text/javascript">
+    var option = '<?php echo get_option('Which_ip_to_logg');?>';
+    if (option == 'selected'){
+        document.getElementById("selected").checked = true;
+    } if (option == 'all') {
+        document.getElementById("all").checked = true;
+    }
+  </script>
+
   <br>
   <form  id="addAddress" class="addAddress" />
     <input type="text" name="ROUTE"  placeholder="IP address" id="dname" />
