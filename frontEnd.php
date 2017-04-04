@@ -101,8 +101,10 @@ function drawLogged(){
     "
     SELECT ID, date, address, post_ID, page_name, page_url 
     FROM $logged 
+    ORDER BY date DESC
     LIMIT $offset, $limit" 
     );
+
 
   $page_links = paginate_links( array(
     'base' => add_query_arg( 'pagenum', '%#%' ),
