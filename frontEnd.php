@@ -20,7 +20,7 @@ function drawForm(){
   <br>
   <form  id="addAddress" class="addAddress" />
     <input type="text" name="ROUTE"  placeholder="IP address" id="dname" />
-    <input type="submit" value="Add" class="button-primary" >
+    <input type="submit" value="Add" class="button-primary" style="margin-bottom: 10px">
   </form>
   <?php
 }
@@ -118,6 +118,7 @@ if ( $page_links ) {
 }
   ?>
     <h3>Logged IPs</h3>
+    <button class="button-primary" id="clear-all" style="margin-bottom: 10px">Clear all</button>
     <table class="widefat">
       <thead>
         <tr>
@@ -139,7 +140,7 @@ if ( $page_links ) {
           <th>Post Link</th>
         </tr>
         </tfoot>
-        <tbody>
+        <tbody id="tbody">
         <?php
         $numeric = 0;
           foreach ($loggedData as $loggedData) {

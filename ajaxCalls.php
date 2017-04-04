@@ -25,6 +25,14 @@ function insertIP(){
   wp_die();
 }
 
+function clearAll(){
+
+  global $wpdb;
+  $logged = $wpdb->prefix . "logged_ips";
+  $delete = $wpdb->query("TRUNCATE TABLE $logged");
+
+}
+
 function deleteRow() {
 
   $ID = $_POST['ID'];
@@ -58,6 +66,7 @@ function whichIpToLog(){
   wp_die();
 }
 
+add_action('wp_ajax_clearAll', 'clearAll');
 add_action('wp_ajax_deleteRow', 'deleteRow');
 add_action('wp_ajax_insertIP', 'insertIP'); 
 add_action('wp_ajax_whichIpToLog', 'whichIpToLog'); 

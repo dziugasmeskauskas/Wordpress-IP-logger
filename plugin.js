@@ -12,6 +12,18 @@ jQuery(document).ready(function($) {
     });
   });
 
+  $('#clear-all').on('click', function(){
+    console.log('all connected');
+    var data = {
+                'action': 'clearAll'
+               };
+     jQuery.post(ajaxurl, data, function(response) {
+      $("#tbody").empty();
+    });
+
+
+  });
+
   $("#addAddress").on("submit", function(e) {
     var rowCount = $('#optional tbody tr').length;
     var IP = jQuery("#dname").val()
