@@ -20,13 +20,34 @@ function getUserIP(){
   $options = $wpdb->prefix . "options";
   $logged = $wpdb->prefix . "logged_ips";
   $optional = $wpdb->prefix . "optional_ips";
-
   $thevalue = get_option('Which_ip_to_logg');
 
-  $postID = get_the_ID();
-  $pageName = get_the_title($postID);
-  $pageUrl = get_post_permalink($postID);
+  $postID = get_queried_object_id();
+  $pageUrl="//".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
   $date = date('Y-m-d H:i:s');
+
+  if($isPage = is_page()){
+    $pageName = get_the_title();
+  } 
+  elseif ($isSingle = is_single()){
+    $pageName = get_the_title();
+  }
+  elseif($isHome = is_home()){
+    $pageName = 'Homepage';
+  }
+  elseif($isCatego = is_category()){
+    $pageName = 'Category';
+  }
+  elseif($isArch = is_archive()){
+    $pageName = 'Archive';
+  }
+  elseif($isSearch = is_search()){
+    $pageName = 'Category';
+  }
+  elseif($isComms = is_comments_popup()){
+    $pageName = 'comments popup';
+  }
+
 
   if($thevalue == 'selected'){
 

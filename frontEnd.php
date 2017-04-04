@@ -127,9 +127,9 @@ if ( $page_links ) {
           <th>#</th>
           <th>IP adress</th>
           <th>Date</th>
-          <th>Post ID</th>
-          <th>Post Name</th>
-          <th>Post Link</th>
+          <th>Post/Page ID</th>
+          <th>Post/Page Name</th>
+          <th>Post/Page Link</th>
         </tr>
       </thead>
         <tfoot>
@@ -137,9 +137,9 @@ if ( $page_links ) {
           <th>#</th>
           <th>IP adress</th>
           <th>Date</th>
-          <th>Post ID</th>
-          <th>Post Name</th>
-          <th>Post Link</th>
+          <th>Post/Page ID</th>
+          <th>Post/Page Name</th>
+          <th>Post/Page Link</th>
         </tr>
         </tfoot>
         <tbody id="tbody">

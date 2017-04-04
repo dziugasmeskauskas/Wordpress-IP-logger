@@ -3,7 +3,9 @@
 add_action( 'wp_ajax_my_action', 'insertIP' );
 function insertIP(){
 
+if ( isset( $_POST['ROUTE'] ) ) {
   $addIP = $_POST['ROUTE'];
+}
 
   global $wpdb;  
   $optional = $wpdb->prefix . "optional_ips";
@@ -35,7 +37,9 @@ function clearAll(){
 
 function deleteRow() {
 
+  if ( isset( $_POST['ID'] ) ) {
   $ID = $_POST['ID'];
+}
 
   global $wpdb; 
   $optional = $wpdb->prefix . "optional_ips";
@@ -51,7 +55,10 @@ function deleteRow() {
 
 function whichIpToLog(){
 
+  if ( isset( $_POST['logIP'] ) ) {
   $logg = $_POST['logIP'];
+
+}
 
   global $wpdb; 
 
