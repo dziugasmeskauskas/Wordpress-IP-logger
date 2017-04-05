@@ -36,7 +36,8 @@ function getUserIP(){
     $pageName = 'Homepage';
   }
   elseif($isCatego = is_category()){
-    $pageName = 'Category';
+    $pageName = 'Category: '.get_the_category_by_ID($postID);
+
   }
   elseif($isArch = is_archive()){
     $pageName = 'Archive';
