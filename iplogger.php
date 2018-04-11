@@ -29,13 +29,14 @@ wp_enqueue_script('ajax');
 
 function iplogger_admin(){
 
-   echo '<div class="wrap">';
+  echo '<div class="wrap">';
 
-   drawForm();
-   drawOptional();
-   drawLogged();
+  drawForm();
+  drawOptional();
+  drawLogged();
 
-   echo '</div>';
+  echo '</div>';
 
   }
 ?>
+

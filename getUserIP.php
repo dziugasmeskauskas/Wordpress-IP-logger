@@ -1,4 +1,5 @@
 <?php
+
 function getUserIP(){
 
   $client  = @$_SERVER['HTTP_CLIENT_IP'];
@@ -13,8 +14,7 @@ function getUserIP(){
 
   }else{
       $ip = $remote;
-
-  } 
+  }
 
   global $wpdb;
   $options = $wpdb->prefix . "options";
@@ -28,7 +28,7 @@ function getUserIP(){
 
   if($isPage = is_page()){
     $pageName = get_the_title();
-  } 
+  }
   elseif ($isSingle = is_single()){
     $pageName = get_the_title();
   }
@@ -37,7 +37,6 @@ function getUserIP(){
   }
   elseif($isCatego = is_category()){
     $pageName = 'Category: '.get_the_category_by_ID($postID);
-
   }
   elseif($isArch = is_archive()){
     $pageName = 'Archive';
@@ -79,4 +78,42 @@ function getUserIP(){
       ));
   }
 }
+
+add_action('pre_get_posts', 'hide_posts' );
+function hide_posts($query) {
+
+  $client  = @$_SERVER['HTTP_CLIENT_IP'];
+  $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+  $remote  = $_SERVER['REMOTE_ADDR'];
+
+  if(filter_var($client, FILTER_VALIDATE_IP)){
+      $ip = $client;
+
+  }elseif(filter_var($forward, FILTER_VALIDATE_IP)){
+      $ip = $forward;
+
+  }else{
+      $ip = $remote;
+  }
+
+  global $wpdb;
+  $optional = $wpdb->prefix . "optional_ips";
+  $optionalIPs = [];
+  $optionalIpsResult = $wpdb->get_results("SELECT * FROM $optional", OBJECT);
+  foreach($optionalIpsResult as $ip) {
+    array_push($optionalIPs, $ip->address);
+  }
+
+  if(in_array($ip->address, $optionalIPs)) {
+    $query->set( 'date_query',
+    [    [
+    'before'     => 'January 1st, 2014',
+    'inclusive' => true,
+    ]    ]
+    );
+  }
+
+};
+
+
 ?>
