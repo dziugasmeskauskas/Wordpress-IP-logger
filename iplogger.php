@@ -4,7 +4,7 @@ Plugin Name: IP Logger
 Plugin URI: https://github.com/dziugasmeskauskas/Wordpress-IP-logger
 Description: Logs IP adresses of visitors.
 Author: Džiugas Meškauskas
-Version: 1.0
+Version: 1.2
 Author URI: https://github.com/dziugasmeskauskas
 License: GPLv2
 */
