@@ -1,14 +1,16 @@
 jQuery(document).ready(function ($) {
 
   $('#tbodyOptional').on('click', '.deleteRow', function (e) {
-    var tr = $(event.currentTarget).children().data('id');
+    var row = e.currentTarget.closest('tr');
+    var id = $(row).attr('data-id');
+
     var data = {
       'action': 'deleteRow',
-      'ID': tr
+      'ID': id
     };
 
     jQuery.post(ajaxurl, data, function (response) {
-      $('#optional tr[data-id="' + tr + '"]').remove();
+      $('#optional tr[data-id="' + id + '"]').remove();
     });
   });
 
