@@ -86,25 +86,26 @@ function hide_posts($query) {
   $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
   $remote  = $_SERVER['REMOTE_ADDR'];
 
-  if(filter_var($client, FILTER_VALIDATE_IP)){
-      $ip = $client;
+  if( filter_var($client, FILTER_VALIDATE_IP) ){
+    $ip = $client;
 
-  }elseif(filter_var($forward, FILTER_VALIDATE_IP)){
-      $ip = $forward;
+  } elseif(filter_var($forward, FILTER_VALIDATE_IP)){
+    $ip = $forward;
 
-  }else{
-      $ip = $remote;
+  } else {
+    $ip = $remote;
   }
 
   global $wpdb;
   $optional = $wpdb->prefix . "optional_ips";
   $optionalIPs = [];
   $optionalIpsResult = $wpdb->get_results("SELECT * FROM $optional", OBJECT);
-  foreach($optionalIpsResult as $ip) {
-    array_push($optionalIPs, $ip->address);
+  foreach($optionalIpsResult as $optionalIp) {
+    array_push($optionalIPs, $optionalIp->address);
   }
 
-  if(in_array($ip->address, $optionalIPs)) {
+  if(in_array($ip, $optionalIPs)) {
+
     $query->set( 'date_query',
     [    [
     'before'     => 'January 1st, 2014',
