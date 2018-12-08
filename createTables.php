@@ -10,7 +10,7 @@ function create_tables(){
   $sql =  "CREATE TABLE IF NOT EXISTS ". $logged . " (
            ID int(11) NOT NULL AUTO_INCREMENT,
            date text,
-           address text NOT NULL, 
+           address text NOT NULL,
            post_ID int(11) NOT NULL,
            page_name text NOT NULL,
            page_url text NOT NULL,
@@ -21,43 +21,43 @@ function create_tables(){
 
   $sql =  "CREATE TABLE IF NOT EXISTS ". $optional . " (
            ID int(11) NOT NULL AUTO_INCREMENT,
-           address text NOT NULL, 
+           address text NOT NULL,
            UNIQUE KEY ID (ID));";
 
   dbDelta($sql);
 
- 
 
- 
+
+
   if (!isset($wpdb->logged_ips)) {
 
-    $wpdb->logged_ips = $logged; 
-    $wpdb->optional_ips = $optional; 
-    $wpdb->tables[] = str_replace($wpdb->prefix, '', $logged); 
-    $wpdb->tables[] = str_replace($wpdb->prefix, '', $optional); 
+    $wpdb->logged_ips = $logged;
+    $wpdb->optional_ips = $optional;
+    $wpdb->tables[] = str_replace($wpdb->prefix, '', $logged);
+    $wpdb->tables[] = str_replace($wpdb->prefix, '', $optional);
   }
 }
 
 function createOption () {
 
-  global $wpdb; 
+  global $wpdb;
   $options = $wpdb->prefix . "options";
 
   $option_name = 'Which_ip_to_logg';
 
   $count = $wpdb->get_var($wpdb->prepare(
-    "SELECT COUNT(*) FROM $options WHERE option_value = %s",
-    'Which_ip_to_logg') 
-     );
+    "SELECT COUNT(*) FROM $options WHERE option_name = %s",
+    'Which_ip_to_logg')
+    );
 
   if($count <= 0){
 
       $wpdb->insert( $options,
-      array( 
-        'option_name' => 'Which_ip_to_logg', 
+      array(
+        'option_name' => 'Which_ip_to_logg',
         'option_value' => 'all',
         'autoload'=>'yes',
       ));
-    } 
+    }
 }
 ?>
